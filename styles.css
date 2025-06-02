@@ -1,15 +1,135 @@
+/* 🧱 Reset and Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  height: 100%;
+  font-family: 'Cinzel', serif;
+  background: linear-gradient(#0a0a0a, #1a1a1a);
+  color: #f8f8f2;
+  line-height: 1.6;
+}
+
+/* 🌌 Header */
+header {
+  background: #121212;
+  color: #ffe08a;
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 2px solid #444;
+}
+header h1 {
+  font-size: 2rem;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px #000;
+}
+
+/* 📐 Layout */
 main {
   display: flex;
-  flex-direction: row;       
+  flex-direction: row;
+  gap: 2rem;
+  padding: 1rem;
 }
 
+/* 📊 Player Sidebar */
 #player-stats {
-  width: 25%;
-  padding: 1rem;
+  flex: 1;
   background: #1e1e1e;
+  padding: 1rem;
+  border: 1px solid #333;
+  border-radius: 10px;
+  max-width: 250px;
+}
+#player-stats h2 {
+  color: #b8f2e6;
+  margin-bottom: 1rem;
+}
+#player-stats ul {
+  list-style: none;
+  margin-top: 0.5rem;
+}
+#player-stats li {
+  margin-bottom: 0.3rem;
 }
 
+/* 📖 Game Area */
 #game-area {
-  width: 75%;
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 📜 Story Box */
+#story-box {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 10px;
   padding: 1rem;
+  font-size: 1.1rem;
+  min-height: 180px;
+  box-shadow: inset 0 0 5px #000;
+}
+
+/* 🔘 Choice Buttons */
+#choice-buttons,
+#combat-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+button {
+  background: #444;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border: 2px solid #888;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+button:hover {
+  background: #ffe08a;
+  color: #000;
+  border-color: #ffe08a;
+  transform: scale(1.05);
+}
+
+/* ⚔️ Combat Menu (Initially Hidden) */
+#combat-menu {
+  display: none;
+}
+
+/* 📱 Responsive (Mobile) */
+@media screen and (max-width: 768px) {
+  main {
+    flex-direction: column;
+  }
+  #player-stats {
+    max-width: 100%;
+  }
+}
+
+/* 📜 Footer */
+footer {
+  background: #111;
+  color: #aaa;
+  text-align: center;
+  padding: 1rem;
+  border-top: 1px solid #333;
+  margin-top: 2rem;
+}
+
+/* ✨ Extras */
+.inventory-item::before {
+  content: '🧪 ';
+}
+.health-bar {
+  color: #e63946;
+}
+.spirit-bar {
+  color: #00b4d8;
 }
