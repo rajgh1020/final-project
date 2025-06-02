@@ -1,0 +1,15 @@
+main {
+  display: flex;
+  flex-direction: row;       
+}
+
+#player-stats {
+  width: 25%;
+  padding: 1rem;
+  background: #1e1e1e;
+}
+
+#game-area {
+  width: 75%;
+  padding: 1rem;
+}

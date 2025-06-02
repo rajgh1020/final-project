@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shadows of Shambhala</title>
+    <!-- Link to CSS and JavaScript files -->
+     <link rel="stylesheet" href="styles.css">
+  </head>
+
+  <body>
+    
+    <!-- 🌌 Header -->
+    <header>
+      <h1>Shadows of Shambhala</h1>
+      <!-- Optional: Nav links (e.g., Archive, About, Contact) -->
+    </header>
+
+    <!-- 🌐 Main game area -->
+    <main>
+
+      <!-- 📊 Sidebar: Player Info -->
+      <section id="player-stats">
+        <h2>Player Info</h2>
+        <p>Name: <span id="player-name">[Name]</span></p>
+        <p>Class: <span id="player-class">[Class]</span></p>
+        <p>Health: <span id="player-health">❤️❤️❤️❤️❤️</span></p>
+        <p>Spirit: <span id="player-spirit">💠💠💠</span></p>
+        <h3>Inventory</h3>
+        <ul id="inventory-list">
+          <!-- JS dynamically adds items here -->
+        </ul>
+      </section>
+
+      <!-- 📖 Story and Choices -->
+      <section id="game-area">
+
+        <!-- 🧾 Story Text -->
+        <div id="story-box">
+          <p>
+            <!-- Dynamic story text goes here -->
+          </p>
+        </div>
+
+        <!-- 🔘 Choice Buttons -->
+        <div id="choice-buttons">
+          <!-- Buttons added via JavaScript -->
+          <!-- Example:
+          <button onclick="makeChoice('sneak')">Sneak through alleys</button>
+          <button onclick="makeChoice('enter')">Enter the village</button>
+          -->
+        </div>
+
+        <!-- ⚔️ Combat Menu (hidden by default) -->
+        <div id="combat-menu">
+          <button onclick="attackEnemy()">Attack</button>
+          <button onclick="useItem()">Use Item</button>
+          <button onclick="fleeBattle()">Flee</button>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- 📜 Footer -->
+    <footer>
+      <p>&copy; 2025 Shadows of Shambhala</p>
+    </footer>
+
+  </body>
+</html>
