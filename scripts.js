@@ -29,6 +29,26 @@ function renderScene(sceneId) {
   const choiceButtons = document.getElementById("choice-buttons");
 
   choiceButtons.innerHTML = "";
+  if (sceneId === "intro") {
+    storyBox.innerHTML = `
+      <p>${scene.text}</p>
+      <input type="text" id="name-input" placeholder="Enter your name" />
+      <button id="start-btn">Start Adventure</button>
+    `;
+
+    document.getElementById("start-btn").addEventListener("click", () => {
+      const nameInput = document.getElementById("name-input").value.trim();
+      if (nameInput.length > 0) {
+        gameState.playerName = nameInput;
+        renderScene("start");
+        updatePlayerStats();
+      } else {
+        alert("Please enter your name to begin.");
+      }
+    });
+
+    return;
+  }
 
   const storyText =
     typeof scene.text === "function"
