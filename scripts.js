@@ -68,3 +68,22 @@ function renderScene(sceneId) {
 }
 
 renderScene(gameState.currentScene);
+
+function updatePlayerStats() {
+  document.getElementById("player-name").textContent =
+    gameState.playerName || "[Name]";
+  document.getElementById("player-class").textContent =
+    gameState.playerClass || "[Class]";
+
+  // Display health as hearts
+  let hearts = "";
+  for (let i = 0; i < gameState.hp; i++) hearts += "❤️";
+  document.getElementById("player-health").textContent = hearts || "💀";
+
+  // Display spirit as gems
+  let gems = "";
+  for (let i = 0; i < gameState.spirit; i++) gems += "💠";
+  document.getElementById("player-spirit").textContent = gems || "✖";
+}
+
+updatePlayerStats();
