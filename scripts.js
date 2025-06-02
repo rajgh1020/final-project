@@ -22,3 +22,29 @@ const scenes = {
   },
   // Add more scenes later
 };
+
+function renderScene(sceneId) {
+  const scene = scenes[sceneId];
+  const storyBox = document.getElementById("story-box");
+  const choiceButtons = document.getElementById("choice-buttons");
+
+  choiceButtons.innerHTML = "";
+
+  const storyText =
+    typeof scene.text === "function"
+      ? scene.text(gameState.playerName)
+      : scene.text;
+
+  storyBox.innerHTML = `<p>${storyText}</p>`;
+
+  scene.choices.forEach((choice) => {
+    const btn = document.createElement("button");
+    btn.textContent = choice.text;
+    btn.addEventListener("click", () => {
+      renderScene(choice.nextScene);
+    });
+    choiceButtons.appendChild(btn);
+  });
+}
+
+renderScene(gameState.currentScene);
