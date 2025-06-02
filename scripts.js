@@ -87,3 +87,15 @@ function updatePlayerStats() {
 }
 
 updatePlayerStats();
+
+function updateInventory() {
+  const inventoryList = document.getElementById("inventory-list");
+  inventoryList.innerHTML = "";
+  gameState.inventory.forEach((item) => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    inventoryList.appendChild(li);
+  });
+}
+
+updateInventory();
