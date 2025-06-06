@@ -40,6 +40,11 @@ const scenes = {
   // Add more scenes later
 };
 
+function toggleCombatMenu(show) {
+  const combatMenu = document.getElementById("combat-menu");
+  combatMenu.style.display = show ? "block" : "none";
+} 
+
 function renderScene(sceneId) {
   const scene = scenes[sceneId];
   const storyBox = document.getElementById("story-box");
@@ -78,8 +83,8 @@ function renderScene(sceneId) {
   if (choice.effect) choice.effect();
   updatePlayerStats();
   renderScene(choice.nextScene);
-});
-
+  } );
+  toggleCombatMenu(sceneId === "combat");
 }
 
 renderScene(gameState.currentScene);
