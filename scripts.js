@@ -59,6 +59,7 @@ function renderScene(sceneId) {
   const choiceButtons = document.getElementById("choice-buttons");
 
   choiceButtons.innerHTML = "";
+
   if (sceneId === "intro") {
     storyBox.innerHTML = `
       <p>${scene.text}</p>
@@ -87,13 +88,20 @@ function renderScene(sceneId) {
 
   storyBox.innerHTML = `<p>${storyText}</p>`;
 
-  btn.addEventListener("click", () => {
-  if (choice.effect) choice.effect();
-  updatePlayerStats();
-  renderScene(choice.nextScene);
-  } );
+  scene.choices.forEach((choice) => {
+    const btn = document.createElement("button");
+    btn.textContent = choice.text;
+    btn.addEventListener("click", () => {
+      if (choice.effect) choice.effect();
+      updatePlayerStats();
+      renderScene(choice.nextScene);
+    });
+    choiceButtons.appendChild(btn);
+  });
+
   toggleCombatMenu(sceneId === "combat");
 }
+
 
 renderScene(gameState.currentScene);
 
