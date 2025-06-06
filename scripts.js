@@ -142,3 +142,18 @@ function updateInventory() {
 }
 
 updateInventory();
+
+function attackEnemy() {
+  alert("You swing your weapon!");
+  renderScene("start");
+}
+
+function useItem() {
+  alert("You use an item!");
+  renderScene("start");
+}
+
+function fleeBattle() {
+  alert("You flee from the enemy!");
+  renderScene("start");
+}
