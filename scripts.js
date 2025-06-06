@@ -37,6 +37,14 @@ const scenes = {
     { text: "Ignore and head to village", nextScene: "villageGate" },
   ],
   },
+  combat: {
+  text: "An enemy approaches! What will you do?",
+  choices: [
+    { text: "Attack", nextScene: "start" },
+    { text: "Use Item", nextScene: "start" },
+    { text: "Flee", nextScene: "start" },
+  ],
+},
   // Add more scenes later
 };
 
