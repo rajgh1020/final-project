@@ -45,6 +45,13 @@ const scenes = {
     { text: "Flee", nextScene: "start" },
   ],
 },
+villageGate: {
+  text: "You arrive at the gates of a ruined village. Shadows move within.",
+  choices: [
+    { text: "Enter the village", nextScene: "combat" },
+    { text: "Turn back", nextScene: "start" },
+  ],
+},
   // Add more scenes later
 };
 
