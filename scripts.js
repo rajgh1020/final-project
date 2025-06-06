@@ -20,6 +20,23 @@ const scenes = {
       { text: "Stay and explore the forest", nextScene: "forestExplore" },
     ],
   },
+  forestExplore: {
+  text:
+    "The forest feels alive with whispers. You find some herbs and a rusty dagger.",
+  choices: [
+    {
+      text: "Pick up the dagger",
+      nextScene: "start",
+      effect: () => {
+        if (!gameState.inventory.includes("Rusty Dagger")) {
+          gameState.inventory.push("Rusty Dagger");
+          updateInventory();
+        }
+      },
+    },
+    { text: "Ignore and head to village", nextScene: "villageGate" },
+  ],
+  },
   // Add more scenes later
 };
 
@@ -57,14 +74,12 @@ function renderScene(sceneId) {
 
   storyBox.innerHTML = `<p>${storyText}</p>`;
 
-  scene.choices.forEach((choice) => {
-    const btn = document.createElement("button");
-    btn.textContent = choice.text;
-    btn.addEventListener("click", () => {
-      renderScene(choice.nextScene);
-    });
-    choiceButtons.appendChild(btn);
-  });
+  btn.addEventListener("click", () => {
+  if (choice.effect) choice.effect();
+  updatePlayerStats();
+  renderScene(choice.nextScene);
+});
+
 }
 
 renderScene(gameState.currentScene);
