@@ -98,7 +98,7 @@ function renderScene(sceneId) {
   const choiceButtons = document.getElementById("choice-buttons");
 
   choiceButtons.innerHTML = "";
-
+  gameState.currentScene = sceneId;
   if (sceneId === "intro") {
     storyBox.innerHTML = `
       <p>${scene.text}</p>
