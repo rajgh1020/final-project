@@ -42,15 +42,15 @@ const scenes = {
     },
     {
       text: "Hunter 🏹 - Agile and alert",
-      nextScene: "start",
+      nextScene: "afterClassSelect", 
       effect: () => {
       gameState.playerClass = "Hunter";
       if (!gameState.inventory.includes("Hunter’s Instinct")) {
         gameState.inventory.push("Hunter’s Instinct");
+        updateInventory();
+        }
       }
-    updateInventory();
-  }
-}
+    }
 
   ]
 },
@@ -60,11 +60,11 @@ const scenes = {
   choices: [
     {
       text: "Pick up the dagger",
-      nextScene: "start",
+      nextScene: "forestDaggerTaken", 
       effect: () => {
-        if (!gameState.inventory.includes("Rusty Dagger")) {
-          gameState.inventory.push("Rusty Dagger");
-          updateInventory();
+      if (!gameState.inventory.includes("Rusty Dagger")) {
+        gameState.inventory.push("Rusty Dagger");
+        updateInventory();
         }
       },
     },
