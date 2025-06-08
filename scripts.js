@@ -20,6 +20,37 @@ const scenes = {
       { text: "Stay and explore the forest", nextScene: "forestExplore" },
     ],
   },
+  classSelect: {
+  text: "Choose your class, brave one:",
+  choices: [
+    {
+      text: "Warrior 🛡️ - Strong and durable",
+      nextScene: "start",
+      effect: () => {
+        gameState.playerClass = "Warrior";
+        gameState.hp += 2; // Bonus health
+      }
+    },
+    {
+      text: "Shaman 🔮 - Spiritual and wise",
+      nextScene: "start",
+      effect: () => {
+        gameState.playerClass = "Shaman";
+        gameState.spirit += 2; // Bonus spirit
+      }
+    },
+    {
+      text: "Hunter 🏹 - Agile and alert",
+      nextScene: "start",
+      effect: () => {
+        gameState.playerClass = "Hunter";
+        // Bonus: add special item or future benefit
+        gameState.inventory.push("Hunter’s Instinct");
+        updateInventory();
+      }
+    }
+  ]
+},
   forestExplore: {
   text:
     "The forest feels alive with whispers. You find some herbs and a rusty dagger.",
@@ -78,7 +109,7 @@ function renderScene(sceneId) {
       const nameInput = document.getElementById("name-input").value.trim();
       if (nameInput.length > 0) {
         gameState.playerName = nameInput;
-        renderScene("start");
+        renderScene("classSelect");
         updatePlayerStats();
       } else {
         alert("Please enter your name to begin.");
@@ -142,6 +173,26 @@ function updateInventory() {
 }
 
 updateInventory();
+
+
+function saveGame() {
+  localStorage.setItem("shambhala-save", JSON.stringify(gameState));
+  alert("Game saved!");
+}
+
+function loadGame() {
+  const saved = localStorage.getItem("shambhala-save");
+  if (saved) {
+    Object.assign(gameState, JSON.parse(saved));
+    updatePlayerStats();
+    updateInventory();
+    renderScene(gameState.currentScene);
+    alert("Game loaded!");
+  } else {
+    alert("No save data found.");
+  }
+}
+
 
 function attackEnemy() {
   alert("You swing your weapon!");
