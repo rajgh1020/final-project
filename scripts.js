@@ -13,13 +13,14 @@ const scenes = {
     choices: [],
   },
   start: {
-    text: (name) =>
-      `You awake in a dark forest near the village of Kyangjin, ${name}. A faint glow flickers in the distance.`,
-    choices: [
-      { text: "Walk toward the glow", nextScene: "villageGate" },
-      { text: "Stay and explore the forest", nextScene: "forestExplore" },
-    ],
-  },
+  text: (name, playerClass) =>
+    `You awake in a dark forest near the village of Kyangjin, ${name} the ${playerClass}. A faint glow flickers in the distance.`,
+  choices: [
+    { text: "Walk toward the glow", nextScene: "villageGate" },
+    { text: "Stay and explore the forest", nextScene: "forestExplore" },
+  ],
+},
+  
   classSelect: {
   text: "Choose your class, brave one:",
   choices: [
