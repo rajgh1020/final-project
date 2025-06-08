@@ -44,12 +44,14 @@ const scenes = {
       text: "Hunter 🏹 - Agile and alert",
       nextScene: "start",
       effect: () => {
-        gameState.playerClass = "Hunter";
-        // Bonus: add special item or future benefit
+      gameState.playerClass = "Hunter";
+      if (!gameState.inventory.includes("Hunter’s Instinct")) {
         gameState.inventory.push("Hunter’s Instinct");
-        updateInventory();
       }
-    }
+    updateInventory();
+  }
+}
+
   ]
 },
   forestExplore: {
