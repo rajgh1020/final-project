@@ -121,9 +121,9 @@ function renderScene(sceneId) {
   }
 
   const storyText =
-    typeof scene.text === "function"
-      ? scene.text(gameState.playerName)
-      : scene.text;
+  typeof scene.text === "function"
+    ? scene.text(gameState.playerName, gameState.playerClass)
+    : scene.text;
 
   storyBox.innerHTML = `<p>${storyText}</p>`;
 
