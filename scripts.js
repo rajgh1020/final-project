@@ -26,7 +26,7 @@ const scenes = {
   choices: [
     {
       text: "Warrior 🛡️ - Strong and durable",
-      nextScene: "start",
+      nextScene: "afterClassSelect",
       effect: () => {
         gameState.playerClass = "Warrior";
         gameState.hp += 2; // Bonus health
@@ -34,7 +34,7 @@ const scenes = {
     },
     {
       text: "Shaman 🔮 - Spiritual and wise",
-      nextScene: "start",
+      nextScene: "afterClassSelect",
       effect: () => {
         gameState.playerClass = "Shaman";
         gameState.spirit += 2; // Bonus spirit
@@ -54,22 +54,36 @@ const scenes = {
 
   ]
 },
+afterClassSelect: {
+  text: () =>
+    `You don your gear and prepare for the journey ahead. You take your first step into the mysterious forest...`,
+  choices: [
+    { text: "Continue", nextScene: "start" }
+  ]
+},
+
   forestExplore: {
   text:
     "The forest feels alive with whispers. You find some herbs and a rusty dagger.",
   choices: [
     {
       text: "Pick up the dagger",
-      nextScene: "forestDaggerTaken", 
+      nextScene: "forestDaggerTaken",
       effect: () => {
       if (!gameState.inventory.includes("Rusty Dagger")) {
         gameState.inventory.push("Rusty Dagger");
-        updateInventory();
-        }
-      },
+      updateInventory();
+      }
+    }
     },
     { text: "Ignore and head to village", nextScene: "villageGate" },
   ],
+  },
+  forestDaggerTaken: {
+  text: "You pick up the rusty dagger. It hums faintly, as if waiting to be used.",
+  choices: [
+    { text: "Return to the path", nextScene: "start" }
+    ]
   },
   combat: {
   text: "An enemy approaches! What will you do?",
