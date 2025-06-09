@@ -100,6 +100,13 @@ villageGate: {
     { text: "Turn back", nextScene: "start" },
   ],
 },
+death: {
+  text: "You have fallen in battle. Darkness surrounds you as your journey ends in the shadows of Shambhala...",
+  choices: [
+    { text: "Restart", nextScene: "intro", effect: () => resetGame() }
+  ]
+},
+
   // Add more scenes later
 };
 
