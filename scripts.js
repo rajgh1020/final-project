@@ -229,6 +229,22 @@ function attackEnemy() {
   }
 }
 
+function useItem() {
+  if (gameState.inventory.includes("Rusty Dagger")) {
+    alert("You use your Rusty Dagger to defeat the enemy!");
+    renderScene("villageGate");
+  } else {
+    alert("You have nothing useful. The enemy takes advantage!");
+    gameState.hp -= 1;
+    updatePlayerStats();
+    if (gameState.hp <= 0) {
+      renderScene("death");
+    } else {
+      renderScene("combat");
+    }
+  }
+}
+
 
 function saveGame() {
   localStorage.setItem("shambhala-save", JSON.stringify(gameState));
