@@ -209,6 +209,26 @@ function resetGame() {
   updateInventory();
 }
 
+function attackEnemy() {
+  const damage = Math.random() < 0.5; // 50% chance enemy hits back
+
+  if (damage) {
+    gameState.hp -= 2;
+    updatePlayerStats();
+
+    if (gameState.hp <= 0) {
+      alert("The enemy strikes you down!");
+      renderScene("death");
+    } else {
+      alert("You attack but take damage!");
+      renderScene("combat");
+    }
+  } else {
+    alert("You strike down the enemy!");
+    renderScene("villageGate");
+  }
+}
+
 
 function saveGame() {
   localStorage.setItem("shambhala-save", JSON.stringify(gameState));
