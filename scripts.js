@@ -276,6 +276,6 @@ function useItem() {
 }
 
 function fleeBattle() {
-  alert("You flee from the enemy!");
+  alert("You flee from the enemy and return to the forest path.");
   renderScene("start");
 }
