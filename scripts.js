@@ -198,6 +198,17 @@ function updateInventory() {
 
 updateInventory();
 
+function resetGame() {
+  gameState.playerName = "";
+  gameState.playerClass = "";
+  gameState.hp = 5;
+  gameState.spirit = 3;
+  gameState.inventory = [];
+  gameState.currentScene = "intro";
+  updatePlayerStats();
+  updateInventory();
+}
+
 
 function saveGame() {
   localStorage.setItem("shambhala-save", JSON.stringify(gameState));
