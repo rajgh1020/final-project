@@ -112,8 +112,32 @@ death: {
 
 function toggleCombatMenu(show) {
   const combatMenu = document.getElementById("combat-menu");
-  combatMenu.style.display = show ? "block" : "none";
-} 
+  if (!combatMenu) return;
+  combatMenu.innerHTML = "";
+
+  if (show) {
+    const attackBtn = document.createElement("button");
+    attackBtn.textContent = "Attack";
+    attackBtn.addEventListener("click", attackEnemy);
+
+    const useItemBtn = document.createElement("button");
+    useItemBtn.textContent = "Use Item";
+    useItemBtn.addEventListener("click", useItem);
+
+    const fleeBtn = document.createElement("button");
+    fleeBtn.textContent = "Flee";
+    fleeBtn.addEventListener("click", fleeBattle);
+
+    combatMenu.appendChild(attackBtn);
+    combatMenu.appendChild(useItemBtn);
+    combatMenu.appendChild(fleeBtn);
+
+    combatMenu.style.display = "block";
+  } else {
+    combatMenu.style.display = "none";
+  }
+}
+
 
 function renderScene(sceneId) {
   const scene = scenes[sceneId];
