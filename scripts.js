@@ -185,7 +185,8 @@ function renderScene(sceneId) {
     choiceButtons.appendChild(btn);
   });
 
-  toggleCombatMenu(sceneId === "combat");
+  if (sceneId !== "combat") toggleCombatMenu(false);
+  else toggleCombatMenu(true);
 }
 
 
