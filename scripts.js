@@ -87,11 +87,7 @@ afterClassSelect: {
   },
   combat: {
   text: "An enemy approaches! What will you do?",
-  choices: [
-    { text: "Attack", nextScene: "start" },
-    { text: "Use Item", nextScene: "start" },
-    { text: "Flee", nextScene: "start" },
-  ],
+  choices: [],
 },
 villageGate: {
   text: "You arrive at the gates of a ruined village. Shadows move within.",
@@ -290,15 +286,6 @@ function loadGame() {
 }
 
 
-function attackEnemy() {
-  alert("You swing your weapon!");
-  renderScene("start");
-}
-
-function useItem() {
-  alert("You use an item!");
-  renderScene("start");
-}
 
 function fleeBattle() {
   alert("You flee from the enemy and return to the forest path.");
