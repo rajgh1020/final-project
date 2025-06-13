@@ -5,6 +5,7 @@ const gameState = {
   spirit: 3,   
   inventory: [],
   currentScene: "intro",
+  usedPower: false,
 };
 
 const scenes = {
@@ -105,6 +106,11 @@ death: {
 
   // Add more scenes later
 };
+
+const powerBtn = document.createElement("button");
+powerBtn.textContent = "Use Power";
+powerBtn.addEventListener("click", usePower);
+if (!gameState.usedPower) combatMenu.appendChild(powerBtn);
 
 function toggleCombatMenu(show) {
   const combatMenu = document.getElementById("combat-menu");
@@ -266,6 +272,48 @@ function useItem() {
   }
 }
 
+function usePower() {
+  if (gameState.usedPower) {
+    alert("You've already used your special power!");
+    return;
+  }
+
+  const cls = gameState.playerClass;
+  gameState.usedPower = true;
+
+  if (cls === "Warrior") {
+    alert("You bash the enemy with your shield, stunning it and blocking the next attack!");
+    renderScene("villageGate"); // Auto win for now
+  } else if (cls === "Shaman") {
+    if (gameState.spirit > 0) {
+      gameState.spirit--;
+      gameState.hp = Math.min(gameState.hp + 2, 5);
+      updatePlayerStats();
+      alert("You channel the spirits to heal yourself and strike the enemy!");
+      renderScene("villageGate"); // Shaman wins too
+    } else {
+      alert("Not enough spirit to use this power.");
+      gameState.usedPower = false; // Refund usage
+    }
+  } else if (cls === "Hunter") {
+    if (gameState.inventory.includes("Hunter’s Instinct")) {
+      alert("You line up a perfect shot. The enemy falls instantly.");
+      renderScene("villageGate");
+    } else {
+      alert("You try to use Piercing Shot, but your senses aren’t sharp enough...");
+      renderScene("combat");
+    }
+  }
+}
+
+if (sceneId === "combat") {
+  gameState.usedPower = false;
+  toggleCombatMenu(true);
+} else {
+  toggleCombatMenu(false);
+}
+
+
 
 function saveGame() {
   localStorage.setItem("shambhala-save", JSON.stringify(gameState));
@@ -291,3 +339,9 @@ function fleeBattle() {
   alert("You flee from the enemy and return to the forest path.");
   renderScene("start");
 }
+
+// ENEMIES ADD GARNA BAKII
+
+function enemiessss(){
+  console.log(enemies)
+};
