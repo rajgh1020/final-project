@@ -1,73 +1,44 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Shadows of Shambhala</title>
-    <!-- Link to CSS and JavaScript files -->
-     <link rel="stylesheet" href="styles.css">
-  </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shadows of Shambhala</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="game-container">
+    <!-- Story Section -->
+    <section id="story-section">
+      <div id="story-box" class="story-box"></div>
+      <div id="choice-buttons" class="choices"></div>
+    </section>
 
-  <body>
-    
-    <!-- 🌌 Header -->
-    <header>
-      <h1>Shadows of Shambhala</h1>
-      <!-- Optional: Nav links (e.g., Archive, About, Contact) -->
-    </header>
+    <!-- Combat Controls (initially hidden) -->
+    <section id="combat-controls" style="display: none;">
+      <button id="attack-btn" class="glow-button">Attack</button>
+      <button id="special-btn" class="glow-button">Use Special</button>
+      <button id="flee-btn" class="glow-button">Flee</button>
+    </section>
 
-    <!-- 🌐 Main game area -->
-    <main>
+    <!-- Player Stats -->
+    <section id="stats">
+      <h3>Player Stats</h3>
+      <ul id="player-stats">
+        <li>HP: <span id="hp">5</span></li>
+        <li>Spirit: <span id="spirit">3</span></li>
+        <li>Class: <span id="player-class">-</span></li>
+      </ul>
+    </section>
 
-      <!-- 📊 Sidebar: Player Info -->
-      <section id="player-stats">
-        <h2>Player Info</h2>
-        <p>Name: <span id="player-name">[Name]</span></p>
-        <p>Class: <span id="player-class">[Class]</span></p>
-        <p>Health: <span id="player-health">❤️❤️❤️❤️❤️</span></p>
-        <p>Spirit: <span id="player-spirit">💠💠💠</span></p>
-        <h3>Inventory</h3>
-        <ul id="inventory-list">
-          <!-- JS dynamically adds items here -->
-        </ul>
-      </section>
+    <!-- Inventory -->
+    <section id="inventory">
+      <h3>Inventory</h3>
+      <ul id="inventory-list"></ul>
+    </section>
+  </main>
 
-      <!-- 📖 Story and Choices -->
-      <section id="game-area">
-
-        <!-- 🧾 Story Text -->
-        <div id="story-box">
-          <p>
-            <!-- Dynamic story text goes here -->
-          </p>
-        </div>
-
-        <!-- 🔘 Choice Buttons -->
-        <div id="choice-buttons">
-          <!-- Buttons added via JavaScript -->
-          <!-- Example:
-          <button onclick="makeChoice('sneak')">Sneak through alleys</button>
-          <button onclick="makeChoice('enter')">Enter the village</button>
-          -->
-        </div>
-
-        <!-- ⚔️ Combat Menu (hidden by default) -->
-        <div id="combat-menu">
-          <button onclick="attackEnemy()">Attack</button>
-          <button onclick="useItem()">Use Item</button>
-          <button onclick="fleeBattle()">Flee</button>
-        </div>
-
-      </section>
-      <div id="save-load-buttons">
-        <button onclick="saveGame()">💾 Save Game</button>
-       <button onclick="loadGame()">📂 Load Game</button>
-       </div>
-
-    </main>
-
-    <!-- 📜 Footer -->
-    <footer>
-      <p>&copy; 2025 Shadows of Shambhala</p>
-    </footer>
-    <script src="scripts.js"></script>
-  </body>
+  <!-- JavaScript -->
+  <script src="scripts.js"></script>
+</body>
 </html>

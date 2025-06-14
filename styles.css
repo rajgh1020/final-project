@@ -1,135 +1,213 @@
-/* 🧱 Reset and Base Styles */
-* {
-  box-sizing: border-box;
+/* ===== Import Fantasy Font ===== */
+@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+
+/* ===== Base Reset & Body Styling ===== */
+body {
+  font-family: 'Uncial Antiqua', serif;
+  background: url('https://www.transparenttextures.com/patterns/dark-wood.png');
+  background-color: #0d0d0d;
+  color: #e0d8c3;
   margin: 0;
   padding: 0;
-}
-html, body {
-  height: 100%;
-  font-family: 'Cinzel', serif;
-  background: linear-gradient(#0a0a0a, #1a1a1a);
-  color: #f8f8f2;
   line-height: 1.6;
+  cursor: url('https://cur.cursors-4u.net/games/gam-10/gam919.cur'), auto;
 }
 
-/* 🌌 Header */
-header {
-  background: #121212;
-  color: #ffe08a;
-  padding: 1rem;
+/* ===== Game Container Styling ===== */
+#game-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px 30px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 4px solid #c19a6b;
+  border-radius: 12px;
+  box-shadow: 0 0 30px #000;
+  animation: fadeIn 1.5s ease-in;
+}
+
+/* ===== Title ===== */
+h1 {
   text-align: center;
-  border-bottom: 2px solid #444;
-}
-header h1 {
-  font-size: 2rem;
-  letter-spacing: 1px;
-  text-shadow: 2px 2px #000;
+  color: #f5e6c9;
+  font-size: 2.8em;
+  margin-bottom: 25px;
+  text-shadow: 2px 2px 6px #000;
 }
 
-/* 📐 Layout */
-main {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  padding: 1rem;
-}
-
-/* 📊 Player Sidebar */
-#player-stats {
-  flex: 1;
-  background: #1e1e1e;
-  padding: 1rem;
-  border: 1px solid #333;
-  border-radius: 10px;
-  max-width: 250px;
-}
-#player-stats h2 {
-  color: #b8f2e6;
-  margin-bottom: 1rem;
-}
-#player-stats ul {
-  list-style: none;
-  margin-top: 0.5rem;
-}
-#player-stats li {
-  margin-bottom: 0.3rem;
-}
-
-/* 📖 Game Area */
-#game-area {
-  flex: 3;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-/* 📜 Story Box */
-#story-box {
-  background: #2a2a2a;
-  border: 1px solid #444;
-  border-radius: 10px;
-  padding: 1rem;
-  font-size: 1.1rem;
-  min-height: 180px;
-  box-shadow: inset 0 0 5px #000;
-}
-
-/* 🔘 Choice Buttons */
-#choice-buttons,
-#combat-menu {
+/* ===== Player Info Styling ===== */
+#player-info {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-}
-button {
-  background: #444;
-  color: #fff;
-  padding: 0.6rem 1.2rem;
-  border: 2px solid #888;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(40, 30, 20, 0.7);
+  border: 2px solid #555;
+  padding: 15px;
   border-radius: 8px;
-  font-weight: bold;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-button:hover {
-  background: #ffe08a;
-  color: #000;
-  border-color: #ffe08a;
-  transform: scale(1.05);
+  font-size: 1.1em;
 }
 
-/* ⚔️ Combat Menu (Initially Hidden) */
+/* ===== Story Text Box ===== */
+#story-box {
+  background: rgba(15, 10, 10, 0.75);
+  padding: 20px;
+  border: 2px solid #7a5c3e;
+  border-radius: 10px;
+  min-height: 140px;
+  margin-bottom: 20px;
+  box-shadow: inset 0 0 10px #000;
+}
+
+/* ===== Buttons ===== */
+button, .glow-button {
+  background: linear-gradient(to bottom, #3b2f2f, #1e1a1a);
+  color: #e0d8c3;
+  border: 2px solid #c19a6b;
+  padding: 10px 22px;
+  margin: 6px;
+  font-family: 'Uncial Antiqua', serif;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 6px #1e1a1a;
+}
+
+button:hover, .glow-button:hover {
+  background: #5a3f2f;
+  transform: scale(1.06);
+  box-shadow: 0 0 15px #c19a6b;
+}
+
+/* ===== Glow Button (special) ===== */
+.glow-button {
+  background: #333;
+  color: #f0e6d2;
+  border: 2px solid #d2b48c;
+  box-shadow: 0 0 5px #d2b48c;
+}
+
+.glow-button:hover {
+  background-color: #222;
+  box-shadow: 0 0 20px #f0e6d2;
+}
+
+/* ===== Input Fields ===== */
+input[type="text"] {
+  padding: 8px 12px;
+  font-family: 'Uncial Antiqua', serif;
+  font-size: 16px;
+  background-color: #1e1a1a;
+  color: #e0d8c3;
+  border: 2px solid #7a5c3e;
+  border-radius: 5px;
+  margin-top: 10px;
+  width: 100%;
+  max-width: 300px;
+}
+
+/* ===== Choice Buttons Box ===== */
+#choice-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* ===== Inventory Styling ===== */
+#inventory-list {
+  list-style-type: none;
+  padding-left: 10px;
+  margin: 10px 0;
+}
+
+#inventory-list li::before {
+  content: "🗡️ ";
+  margin-right: 6px;
+}
+
+.inventory-icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+/* ===== Combat Menu Styling ===== */
 #combat-menu {
   display: none;
-}
-
-/* 📱 Responsive (Mobile) */
-@media screen and (max-width: 768px) {
-  main {
-    flex-direction: column;
-  }
-  #player-stats {
-    max-width: 100%;
-  }
-}
-
-/* 📜 Footer */
-footer {
-  background: #111;
-  color: #aaa;
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(30, 20, 20, 0.7);
+  border: 2px dashed #7a5c3e;
+  border-radius: 8px;
   text-align: center;
-  padding: 1rem;
-  border-top: 1px solid #333;
-  margin-top: 2rem;
 }
 
-/* ✨ Extras */
-.inventory-item::before {
-  content: '🧪 ';
+/* ===== Special Effects ===== */
+.fade-in {
+  animation: fadeIn 1.2s ease-in-out;
 }
-.health-bar {
-  color: #e63946;
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
-.spirit-bar {
-  color: #00b4d8;
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: .15em solid #f0e6d2;
+  animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: #f0e6d2; }
+}
+
+/* ===== Responsive Design ===== */
+@media screen and (max-width: 768px) {
+  #game-container {
+    margin: 20px 10px;
+    padding: 15px 20px;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  #player-info {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  #story-box {
+    font-size: 0.95em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 1.6em;
+  }
+
+  input[type="text"] {
+    font-size: 14px;
+  }
+
+  .inventory-icon {
+    width: 20px;
+    height: 20px;
+  }
 }
