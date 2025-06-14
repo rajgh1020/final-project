@@ -1,4 +1,4 @@
-// Game State
+// ===== Game State =====
 const gameState = {
   playerName: "",
   playerClass: "",
@@ -7,37 +7,21 @@ const gameState = {
   inventory: [],
   currentScene: "intro",
   usedPower: false,
-  currentEnemy: null,
+  currentEnemyIndex: 0
 };
 
+// ===== Enemy List =====
 const enemyList = [
-  {
-    name: "Wild Beast",
-    attack: "Claw Swipe",
-    damage: 2,
-    nextScene: "villageCenter",
-  },
-  {
-    name: "Cultist",
-    attack: "Dark Ritual",
-    damage: 3,
-    nextScene: "templeEntrance",
-  },
-  {
-    name: "Temple Guardian",
-    attack: "Stone Slam",
-    damage: 4,
-    nextScene: "finalVictory",
-  }
+  { name: "Wild Beast", attack: "Claw Swipe", nextScene: "villageAfterBeast" },
+  { name: "Cursed Monk", attack: "Spirit Drain", nextScene: "villageAfterMonk" },
+  { name: "Ancient Wraith", attack: "Soul Shatter", nextScene: "finalVictory" }
 ];
 
-gameState.currentEnemyIndex = 0;
-
-// Scenes
+// ===== Scenes =====
 const scenes = {
   intro: {
     text: "Welcome, adventurer! What is your name?",
-    choices: [],
+    choices: []
   },
   classSelect: {
     text: "Choose your class, brave one:",
@@ -48,7 +32,7 @@ const scenes = {
         effect: () => {
           gameState.playerClass = "Warrior";
           gameState.hp += 2;
-        },
+        }
       },
       {
         text: "Shaman 🔮 - Spiritual and wise",
@@ -56,7 +40,7 @@ const scenes = {
         effect: () => {
           gameState.playerClass = "Shaman";
           gameState.spirit += 2;
-        },
+        }
       },
       {
         text: "Hunter 🏹 - Agile and alert",
@@ -67,24 +51,23 @@ const scenes = {
             gameState.inventory.push("Hunter’s Instinct");
             updateInventory();
           }
-        },
-      },
-    ],
+        }
+      }
+    ]
   },
   afterClassSelect: {
     text: () => `You don your gear and prepare for the journey ahead. You take your first step into the mysterious forest...`,
-    choices: [{ text: "Continue", nextScene: "start" }],
+    choices: [{ text: "Continue", nextScene: "start" }]
   },
   start: {
-    text: (name, playerClass) =>
-      `You awake in a dark forest near Kyangjin, ${name} the ${playerClass}. A glow flickers nearby.`,
+    text: (name, playerClass) => `You awake in a dark forest near the village of Kyangjin, ${name} the ${playerClass}. A faint glow flickers in the distance.`,
     choices: [
       { text: "Walk toward the glow", nextScene: "villageGate" },
-      { text: "Explore the forest", nextScene: "forestExplore" },
-    ],
+      { text: "Stay and explore the forest", nextScene: "forestExplore" }
+    ]
   },
   forestExplore: {
-    text: "The forest feels alive. You find herbs and a rusty dagger.",
+    text: "The forest feels alive with whispers. You find some herbs and a rusty dagger.",
     choices: [
       {
         text: "Pick up the dagger",
@@ -94,64 +77,167 @@ const scenes = {
             gameState.inventory.push("Rusty Dagger");
             updateInventory();
           }
-        },
+        }
       },
-      { text: "Ignore and head to village", nextScene: "villageGate" },
-    ],
+      { text: "Ignore and head to village", nextScene: "villageGate" }
+    ]
   },
   forestDaggerTaken: {
-    text: "You pick up the rusty dagger. It hums faintly.",
-    choices: [{ text: "Return to path", nextScene: "start" }],
+    text: "You pick up the rusty dagger. It hums faintly, as if waiting to be used.",
+    choices: [{ text: "Return to the path", nextScene: "start" }]
   },
   villageGate: {
     text: "You arrive at the ruined village gate. Shadows stir.",
     choices: [
-      { text: "Enter the village", nextScene: "combat" },
-      { text: "Turn back", nextScene: "start" },
-    ],
-  },
-  villageCenter: {
-    text: "The village is silent. A temple lies beyond.",
-    choices: [
-      { text: "Approach the temple", nextScene: "combat" },
       {
-        text: "Rest before continuing",
-        nextScene: "rest",
-        effect: () => {
-          gameState.hp = Math.min(gameState.hp + 2, 5);
-          updatePlayerStats();
-        },
+        text: "Enter the village",
+        nextScene: "combat"
       },
-    ],
+      {
+        text: "Turn back",
+        nextScene: "start"
+      }
+    ]
   },
-  rest: {
-    text: "You rest and feel rejuvenated.",
-    choices: [{ text: "Continue to the temple", nextScene: "combat" }],
+  villageAfterBeast: {
+    text: "The beast is defeated. The path ahead leads deeper into the cursed village.",
+    choices: [{ text: "Keep going", nextScene: "combat" }]
+  },
+  villageAfterMonk: {
+    text: "You vanquished the cursed monk. The air grows colder... something worse awaits.",
+    choices: [{ text: "Press forward", nextScene: "combat" }]
   },
   finalVictory: {
-    text: "You have defeated the guardian. Peace returns to Shambhala.",
-    choices: [
-      { text: "Restart", nextScene: "intro", effect: () => resetGame() },
-    ],
+    text: "The wraith fades with a final howl. Peace returns to Kyangjin. You've survived the Shadows of Shambhala.",
+    choices: [{ text: "Play Again", nextScene: "intro", effect: () => resetGame() }]
   },
   combat: {
     text: () => {
-      const enemy = gameState.currentEnemy;
-      return enemy
-        ? `A ${enemy.name} appears! It uses ${enemy.power}!`
-        : "An enemy approaches!";
+      const enemy = enemyList[gameState.currentEnemyIndex];
+      return `A ${enemy.name} appears! It uses ${enemy.attack}!`;
     },
-    choices: [],
+    choices: []
   },
   death: {
-    text: "You fall in battle. The shadows consume you...",
-    choices: [
-      { text: "Restart", nextScene: "intro", effect: () => resetGame() },
-    ],
-  },
+    text: "You have fallen in battle. Darkness surrounds you as your journey ends...",
+    choices: [{ text: "Restart", nextScene: "intro", effect: () => resetGame() }]
+  }
 };
 
-// Rendering logic
+// ======= Combat Control =======
+function advanceToNextEnemyScene() {
+  const enemy = enemyList[gameState.currentEnemyIndex];
+  if (enemy && enemy.nextScene) {
+    gameState.currentEnemyIndex++;
+    renderScene(enemy.nextScene);
+  } else {
+    renderScene("finalVictory");
+  }
+}
+
+function toggleCombatMenu(show) {
+  const combatMenu = document.getElementById("combat-menu");
+  if (!combatMenu) return;
+  combatMenu.innerHTML = "";
+
+  if (show) {
+    const attackBtn = document.createElement("button");
+    attackBtn.textContent = "Attack";
+    attackBtn.addEventListener("click", attackEnemy);
+
+    const useItemBtn = document.createElement("button");
+    useItemBtn.textContent = "Use Item";
+    useItemBtn.addEventListener("click", useItem);
+
+    const fleeBtn = document.createElement("button");
+    fleeBtn.textContent = "Flee";
+    fleeBtn.addEventListener("click", fleeBattle);
+
+    const powerBtn = document.createElement("button");
+    powerBtn.textContent = "Use Power";
+    powerBtn.addEventListener("click", usePower);
+
+    combatMenu.appendChild(attackBtn);
+    combatMenu.appendChild(useItemBtn);
+    combatMenu.appendChild(fleeBtn);
+    if (!gameState.usedPower) combatMenu.appendChild(powerBtn);
+
+    combatMenu.style.display = "block";
+  } else {
+    combatMenu.style.display = "none";
+  }
+}
+
+function attackEnemy() {
+  const damage = Math.random() < 0.5;
+  if (damage) {
+    gameState.hp -= 2;
+    updatePlayerStats();
+    if (gameState.hp <= 0) {
+      alert("The enemy strikes you down!");
+      renderScene("death");
+    } else {
+      alert("You attack but take damage!");
+      renderScene("combat");
+    }
+  } else {
+    alert("You strike down the enemy!");
+    advanceToNextEnemyScene();
+  }
+}
+
+function useItem() {
+  if (gameState.inventory.includes("Rusty Dagger")) {
+    alert("You use your Rusty Dagger to defeat the enemy!");
+    advanceToNextEnemyScene();
+  } else {
+    alert("You have nothing useful. The enemy takes advantage!");
+    gameState.hp -= 1;
+    updatePlayerStats();
+    if (gameState.hp <= 0) renderScene("death");
+    else renderScene("combat");
+  }
+}
+
+function usePower() {
+  if (gameState.usedPower) {
+    alert("You've already used your special power!");
+    return;
+  }
+  gameState.usedPower = true;
+
+  const cls = gameState.playerClass;
+  if (cls === "Warrior") {
+    alert("You bash the enemy with your shield and win the fight!");
+    advanceToNextEnemyScene();
+  } else if (cls === "Shaman") {
+    if (gameState.spirit > 0) {
+      gameState.spirit--;
+      gameState.hp = Math.min(gameState.hp + 2, 5);
+      updatePlayerStats();
+      alert("You heal and blast the enemy with spirit!");
+      advanceToNextEnemyScene();
+    } else {
+      alert("Not enough spirit!");
+      gameState.usedPower = false;
+    }
+  } else if (cls === "Hunter") {
+    if (gameState.inventory.includes("Hunter’s Instinct")) {
+      alert("You use Piercing Shot to instantly kill the enemy!");
+      advanceToNextEnemyScene();
+    } else {
+      alert("You try to use your power, but fail!");
+      renderScene("combat");
+    }
+  }
+}
+
+function fleeBattle() {
+  alert("You flee from the enemy and return to the forest path.");
+  renderScene("start");
+}
+
+// ======= Render & UI =======
 function renderScene(sceneId) {
   const scene = scenes[sceneId];
   const storyBox = document.getElementById("story-box");
@@ -161,36 +247,22 @@ function renderScene(sceneId) {
   gameState.currentScene = sceneId;
 
   if (sceneId === "intro") {
-    storyBox.innerHTML = `
-      <p>${scene.text}</p>
-      <input type="text" id="name-input" placeholder="Enter your name" />
-      <button id="start-btn">Start Adventure</button>
-    `;
+    storyBox.innerHTML = `<p>${scene.text}</p><input type="text" id="name-input" placeholder="Enter your name" /><button id="start-btn">Start Adventure</button>`;
     document.getElementById("start-btn").addEventListener("click", () => {
-      const name = document.getElementById("name-input").value.trim();
-      if (name) {
-        gameState.playerName = name;
+      const nameInput = document.getElementById("name-input").value.trim();
+      if (nameInput.length > 0) {
+        gameState.playerName = nameInput;
         renderScene("classSelect");
         updatePlayerStats();
+      } else {
+        alert("Please enter your name to begin.");
       }
     });
     return;
   }
 
-  // Set combat enemy
-  if (sceneId === "combat") {
-    if (gameState.currentScene === "villageGate") {
-      gameState.currentEnemy = { name: "Cultist", hp: 3, power: "Dark Slash" };
-    } else if (gameState.currentScene === "villageCenter") {
-      gameState.currentEnemy = { name: "Temple Guardian", hp: 5, power: "Stone Slam" };
-    } else {
-      gameState.currentEnemy = { name: "Wild Beast", hp: 2, power: "Claw Swipe" };
-    }
-    gameState.usedPower = false;
-  }
-
-  const text = typeof scene.text === "function" ? scene.text() : scene.text;
-  storyBox.innerHTML = `<p>${text}</p>`;
+  const storyText = typeof scene.text === "function" ? scene.text(gameState.playerName, gameState.playerClass) : scene.text;
+  storyBox.innerHTML = `<p>${storyText}</p>`;
 
   scene.choices.forEach((choice) => {
     const btn = document.createElement("button");
@@ -206,130 +278,38 @@ function renderScene(sceneId) {
   toggleCombatMenu(sceneId === "combat");
 }
 
-function toggleCombatMenu(show) {
-  const combatMenu = document.getElementById("combat-menu");
-  if (!combatMenu) return;
-  combatMenu.innerHTML = "";
-  combatMenu.style.display = show ? "block" : "none";
-
-  if (show) {
-    [
-      { text: "Attack", handler: attackEnemy },
-      { text: "Use Item", handler: useItem },
-      { text: "Flee", handler: fleeBattle },
-      { text: "Use Power", handler: usePower },
-    ].forEach(({ text, handler }) => {
-      const btn = document.createElement("button");
-      btn.textContent = text;
-      btn.addEventListener("click", handler);
-      combatMenu.appendChild(btn);
-    });
-  }
-}
-
-function attackEnemy() {
-  const enemy = gameState.currentEnemy;
-  if (!enemy) return;
-  enemy.hp -= 2;
-
-  if (enemy.hp <= 0) {
-    alert(`You defeated the ${enemy.name}!`);
-    if (enemy.name === "Wild Beast") renderScene("villageGate");
-    else if (enemy.name === "Cultist") renderScene("villageCenter");
-    else if (enemy.name === "Temple Guardian") renderScene("finalVictory");
-    return;
-  }
-
-  gameState.hp -= 1;
-  updatePlayerStats();
-  if (gameState.hp <= 0) renderScene("death");
-  else renderScene("combat");
-}
-
-function useItem() {
-  if (gameState.inventory.includes("Rusty Dagger")) {
-    alert("You stab the enemy with your Rusty Dagger!");
-    gameState.currentEnemy.hp = 0;
-    attackEnemy();
-  } else {
-    alert("You have nothing useful.");
-    gameState.hp -= 1;
-    updatePlayerStats();
-    if (gameState.hp <= 0) renderScene("death");
-    else renderScene("combat");
-  }
-}
-
-function usePower() {
-  if (gameState.usedPower) {
-    alert("Power already used!");
-    return;
-  }
-  const cls = gameState.playerClass;
-  gameState.usedPower = true;
-
-  if (cls === "Warrior") {
-    alert("You bash the enemy with your shield!");
-    gameState.currentEnemy.hp = 0;
-  } else if (cls === "Shaman") {
-    if (gameState.spirit > 0) {
-      gameState.spirit--;
-      gameState.hp = Math.min(gameState.hp + 2, 5);
-      alert("You heal and smite your foe!");
-      gameState.currentEnemy.hp = 0;
-    } else {
-      alert("Not enough spirit.");
-      gameState.usedPower = false;
-    }
-  } else if (cls === "Hunter") {
-    if (gameState.inventory.includes("Hunter’s Instinct")) {
-      alert("Perfect shot! The enemy drops.");
-      gameState.currentEnemy.hp = 0;
-    } else {
-      alert("Your senses aren't sharp enough.");
-    }
-  }
-  attackEnemy();
-}
-
-function fleeBattle() {
-  alert("You escape!");
-  renderScene("start");
-}
-
 function updatePlayerStats() {
   document.getElementById("player-name").textContent = gameState.playerName || "[Name]";
   document.getElementById("player-class").textContent = gameState.playerClass || "[Class]";
-
-  document.getElementById("player-health").textContent = gameState.hp > 0 ? "❤️".repeat(gameState.hp) : "💀";
-  document.getElementById("player-spirit").textContent = gameState.spirit > 0 ? "💠".repeat(gameState.spirit) : "✖";
+  document.getElementById("player-health").textContent = "❤️".repeat(gameState.hp) || "💀";
+  document.getElementById("player-spirit").textContent = "💠".repeat(gameState.spirit) || "✖";
 }
 
 function updateInventory() {
-  const list = document.getElementById("inventory-list");
-  list.innerHTML = "";
+  const inventoryList = document.getElementById("inventory-list");
+  inventoryList.innerHTML = "";
   gameState.inventory.forEach((item) => {
     const li = document.createElement("li");
     li.textContent = item;
-    list.appendChild(li);
+    inventoryList.appendChild(li);
   });
 }
 
 function resetGame() {
-  Object.assign(gameState, {
-    playerName: "",
-    playerClass: "",
-    hp: 5,
-    spirit: 3,
-    inventory: [],
-    currentScene: "intro",
-    usedPower: false,
-    currentEnemy: null,
-  });
+  gameState.playerName = "";
+  gameState.playerClass = "";
+  gameState.hp = 5;
+  gameState.spirit = 3;
+  gameState.inventory = [];
+  gameState.currentScene = "intro";
+  gameState.usedPower = false;
+  gameState.currentEnemyIndex = 0;
   updatePlayerStats();
   updateInventory();
+  renderScene("intro");
 }
 
+// Optional Save/Load
 function saveGame() {
   localStorage.setItem("shambhala-save", JSON.stringify(gameState));
   alert("Game saved!");
@@ -344,8 +324,11 @@ function loadGame() {
     renderScene(gameState.currentScene);
     alert("Game loaded!");
   } else {
-    alert("No save found.");
+    alert("No save data found.");
   }
 }
 
+// ===== Init =====
 renderScene(gameState.currentScene);
+updatePlayerStats();
+updateInventory();
