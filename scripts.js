@@ -7,14 +7,15 @@ const gameState = {
   inventory: [],
   currentScene: "intro",
   usedPower: false,
-  currentEnemyIndex: 0
+  currentEnemyIndex: 0,
+  currentEnemyHP: 0
 };
 
 // ===== Enemy List =====
 const enemyList = [
-  { name: "Wild Beast", attack: "Claw Swipe", nextScene: "villageAfterBeast" },
-  { name: "Cursed Monk", attack: "Spirit Drain", nextScene: "villageAfterMonk" },
-  { name: "Ancient Wraith", attack: "Soul Shatter", nextScene: "finalVictory" }
+  { name: "Wild Beast", attack: "Claw Swipe", nextScene: "villageAfterBeast", hp: 3, damage: 1 },
+  { name: "Cursed Monk", attack: "Spirit Drain", nextScene: "villageAfterMonk", hp: 5, damage: 2 },
+  { name: "Ancient Wraith", attack: "Soul Shatter", nextScene: "finalVictory", hp: 7, damage: 3 }
 ];
 
 // ===== Scenes =====
@@ -124,17 +125,21 @@ const scenes = {
   }
 };
 
-// ======= Combat Control =======
 function advanceToNextEnemyScene() {
   const enemy = enemyList[gameState.currentEnemyIndex];
   if (enemy && enemy.nextScene) {
     gameState.currentEnemyIndex++;
+    const nextEnemy = enemyList[gameState.currentEnemyIndex];
+    if (nextEnemy) {
+      gameState.currentEnemyHP = nextEnemy.hp;
+    }
     renderScene(enemy.nextScene);
   } else {
     renderScene("finalVictory");
   }
 }
 
+// ===== Combat Menu Logic =====
 function toggleCombatMenu(show) {
   const combatMenu = document.getElementById("combat-menu");
   if (!combatMenu) return;
@@ -168,34 +173,54 @@ function toggleCombatMenu(show) {
   }
 }
 
+// ===== Combat Actions =====
 function attackEnemy() {
-  const damage = Math.random() < 0.5;
-  if (damage) {
-    gameState.hp -= 2;
-    updatePlayerStats();
-    if (gameState.hp <= 0) {
-      alert("The enemy strikes you down!");
-      renderScene("death");
-    } else {
-      alert("You attack but take damage!");
-      renderScene("combat");
+  const enemy = enemyList[gameState.currentEnemyIndex];
+  const hitSuccess = Math.random() < 0.7;
+
+  if (hitSuccess) {
+    gameState.currentEnemyHP -= 2;
+    alert(`You hit the ${enemy.name} for 2 damage!`);
+
+    if (gameState.currentEnemyHP <= 0) {
+      alert(`You defeated the ${enemy.name}!`);
+      advanceToNextEnemyScene();
+      return;
     }
   } else {
-    alert("You strike down the enemy!");
-    advanceToNextEnemyScene();
+    alert("Your attack missed!");
+  }
+
+  gameState.hp -= enemy.damage;
+  alert(`${enemy.name} attacks you for ${enemy.damage} damage!`);
+  updatePlayerStats();
+
+  if (gameState.hp <= 0) {
+    renderScene("death");
+  } else {
+    renderScene("combat");
   }
 }
 
 function useItem() {
+  const enemy = enemyList[gameState.currentEnemyIndex];
   if (gameState.inventory.includes("Rusty Dagger")) {
-    alert("You use your Rusty Dagger to defeat the enemy!");
-    advanceToNextEnemyScene();
+    gameState.currentEnemyHP -= 3;
+    alert("You slash with your Rusty Dagger!");
+
+    if (gameState.currentEnemyHP <= 0) {
+      alert("You defeated the enemy with the dagger!");
+      advanceToNextEnemyScene();
+    } else {
+      gameState.hp -= enemy.damage;
+      alert(`${enemy.name} counters for ${enemy.damage} damage!`);
+      updatePlayerStats();
+      if (gameState.hp <= 0) renderScene("death");
+      else renderScene("combat");
+    }
   } else {
-    alert("You have nothing useful. The enemy takes advantage!");
-    gameState.hp -= 1;
-    updatePlayerStats();
-    if (gameState.hp <= 0) renderScene("death");
-    else renderScene("combat");
+    alert("You have no usable item.");
+    renderScene("combat");
   }
 }
 
@@ -205,7 +230,6 @@ function usePower() {
     return;
   }
   gameState.usedPower = true;
-
   const cls = gameState.playerClass;
   if (cls === "Warrior") {
     alert("You bash the enemy with your shield and win the fight!");
@@ -237,7 +261,7 @@ function fleeBattle() {
   renderScene("start");
 }
 
-// ======= Render & UI =======
+// ===== Render Logic =====
 function renderScene(sceneId) {
   const scene = scenes[sceneId];
   const storyBox = document.getElementById("story-box");
@@ -245,7 +269,6 @@ function renderScene(sceneId) {
 
   choiceButtons.innerHTML = "";
   gameState.currentScene = sceneId;
-
   if (sceneId === "intro") {
     storyBox.innerHTML = `<p>${scene.text}</p><input type="text" id="name-input" placeholder="Enter your name" /><button id="start-btn">Start Adventure</button>`;
     document.getElementById("start-btn").addEventListener("click", () => {
@@ -261,8 +284,16 @@ function renderScene(sceneId) {
     return;
   }
 
+  if (sceneId === "combat") {
+    const enemy = enemyList[gameState.currentEnemyIndex];
+    if (gameState.currentEnemyHP === 0) gameState.currentEnemyHP = enemy.hp;
+  }
+
   const storyText = typeof scene.text === "function" ? scene.text(gameState.playerName, gameState.playerClass) : scene.text;
   storyBox.innerHTML = `<p>${storyText}</p>`;
+  if (sceneId === "combat") {
+    storyBox.innerHTML += `<p>Enemy HP: ❤️ ${gameState.currentEnemyHP}</p>`;
+  }
 
   scene.choices.forEach((choice) => {
     const btn = document.createElement("button");
@@ -275,9 +306,11 @@ function renderScene(sceneId) {
     choiceButtons.appendChild(btn);
   });
 
-  toggleCombatMenu(sceneId === "combat");
+  if (sceneId !== "combat") toggleCombatMenu(false);
+  else toggleCombatMenu(true);
 }
 
+// ===== UI Updates =====
 function updatePlayerStats() {
   document.getElementById("player-name").textContent = gameState.playerName || "[Name]";
   document.getElementById("player-class").textContent = gameState.playerClass || "[Class]";
@@ -304,12 +337,13 @@ function resetGame() {
   gameState.currentScene = "intro";
   gameState.usedPower = false;
   gameState.currentEnemyIndex = 0;
+  gameState.currentEnemyHP = 0;
   updatePlayerStats();
   updateInventory();
   renderScene("intro");
 }
 
-// Optional Save/Load
+// ===== Save/Load (Optional) =====
 function saveGame() {
   localStorage.setItem("shambhala-save", JSON.stringify(gameState));
   alert("Game saved!");
