@@ -2,34 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Shadows of Shambhala</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="game.css">
+  <script defer src="scripts.js"></script>
 </head>
 <body>
   <header class="navbar">
-  <div class="nav-title">Shadows of Shambhala</div>
-  <nav class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="game.html">Start Game</a>
-    <a href="about.html">How to Play</a>
-    <a href="story.html">Story</a>
-  </nav>
-</header>
+    <div class="nav-title">Shadows of Shambhala</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="game.html" class="active">Start Game</a>
+      <a href="rules.html">How to Play</a>
+      <a href="story.html">Story</a>
+    </nav>
+  </header>
 
-  <main class="game-container">
+  <main id="game-container">
     <!-- Story Section -->
     <section id="story-section">
       <div id="story-box" class="story-box"></div>
       <div id="choice-buttons" class="choices"></div>
     </section>
 
-    <!-- Combat Controls (initially hidden) -->
+    <!-- Combat Controls -->
     <section id="combat-controls" style="display: none;">
       <button id="attack-btn" class="glow-button">Attack</button>
       <button id="special-btn" class="glow-button">Use Special</button>
       <button id="flee-btn" class="glow-button">Flee</button>
+    </section>
+
+    <!-- Save / Load Controls -->
+    <section id="save-controls" class="save-controls">
+      <button id="save-btn" class="glow-button">💾 Save Game</button>
+      <button id="load-btn" class="glow-button">📂 Load Game</button>
     </section>
 
     <!-- Player Stats -->
@@ -48,8 +54,5 @@
       <ul id="inventory-list"></ul>
     </section>
   </main>
-
-  <!-- JavaScript -->
-  <script src="scripts.js"></script>
 </body>
 </html>

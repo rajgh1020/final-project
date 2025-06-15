@@ -18,7 +18,7 @@ const enemyList = [
   { name: "Ancient Wraith", attack: "Soul Shatter", nextScene: "finalVictory", hp: 7, damage: 3 }
 ];
 
-// ===== Scenes =====
+// ===== Scenes Definition =====
 const scenes = {
   intro: {
     text: "Welcome, adventurer! What is your name?",
@@ -108,8 +108,8 @@ const scenes = {
   },
   combat: {
     text: () => {
-      const enemy = enemyList[gameState.currentEnemyIndex];
-      return `A ${enemy.name} appears! It uses ${enemy.attack}!`;
+      const e = enemyList[gameState.currentEnemyIndex];
+      return `A ${e.name} appears! It uses ${e.attack}!`;
     },
     choices: []
   },
@@ -119,64 +119,76 @@ const scenes = {
   }
 };
 
+// ===== Render Logic =====
 function renderScene(sceneId) {
   const scene = scenes[sceneId];
-  const storyBox = document.getElementById("story-box");
-  const choiceButtons = document.getElementById("choice-buttons");
+  const box = document.getElementById("story-box");
+  const choices = document.getElementById("choice-buttons");
 
-  storyBox.classList.remove("fade-in");
-  void storyBox.offsetWidth; // Reflow trigger
-  storyBox.classList.add("fade-in");
+  // fade animation
+  box.classList.remove("fade-in");
+  void box.offsetWidth;
+  box.classList.add("fade-in");
 
-  choiceButtons.innerHTML = "";
+  choices.innerHTML = "";
   gameState.currentScene = sceneId;
 
+  // intro special
   if (sceneId === "intro") {
-    storyBox.innerHTML = `<p>${scene.text}</p><input type="text" id="name-input" placeholder="Enter your name" /><button id="start-btn" class="glow-button">Start Adventure</button>`;
-    document.getElementById("start-btn").addEventListener("click", () => {
-      const nameInput = document.getElementById("name-input").value.trim();
-      if (nameInput.length > 0) {
-        gameState.playerName = nameInput;
+    box.innerHTML = `
+      <p>${scene.text}</p>
+      <input id="name-input" type="text" placeholder="Enter your name" />
+      <button id="start-btn" class="glow-button">Start Adventure</button>
+    `;
+    document.getElementById("start-btn")
+      .addEventListener("click", () => {
+        const name = document.getElementById("name-input").value.trim();
+        if (!name) return alert("Please enter your name.");
+        gameState.playerName = name;
         renderScene("classSelect");
         updatePlayerStats();
-      } else {
-        alert("Please enter your name to begin.");
-      }
-    });
+      });
     return;
   }
 
+  // combat init
   if (sceneId === "combat") {
-    const enemy = enemyList[gameState.currentEnemyIndex];
-    if (gameState.currentEnemyHP <= 0) gameState.currentEnemyHP = enemy.hp;
+    const e = enemyList[gameState.currentEnemyIndex];
+    if (gameState.currentEnemyHP <= 0) gameState.currentEnemyHP = e.hp;
   }
 
-  const storyText = typeof scene.text === "function" ? scene.text(gameState.playerName, gameState.playerClass) : scene.text;
-  storyBox.innerHTML = `<p class="typewriter">${storyText}</p>`;
+  // normal text
+  const text = typeof scene.text === "function"
+    ? scene.text(gameState.playerName, gameState.playerClass)
+    : scene.text;
+  box.innerHTML = `<p>${text}</p>`;
   if (sceneId === "combat") {
-    storyBox.innerHTML += `<p>Enemy HP: ❤️ ${gameState.currentEnemyHP}</p>`;
+    box.innerHTML += `<p>Enemy HP: ❤️ ${gameState.currentEnemyHP}</p>`;
   }
 
-  scene.choices.forEach((choice) => {
+  // choices
+  for (const c of scene.choices) {
     const btn = document.createElement("button");
-    btn.textContent = choice.text;
     btn.className = "glow-button";
+    btn.textContent = c.text;
     btn.addEventListener("click", () => {
-      if (choice.effect) choice.effect();
+      if (c.effect) c.effect();
       updatePlayerStats();
-      renderScene(choice.nextScene);
+      renderScene(c.nextScene);
     });
-    choiceButtons.appendChild(btn);
-  });
+    choices.appendChild(btn);
+  }
 
   toggleCombatMenu(sceneId === "combat");
 }
 
+// ===== Toggle Combat UI =====
 function toggleCombatMenu(show) {
-  const menu = document.getElementById("combat-controls");
-  menu.style.display = show ? "block" : "none";
+  document.getElementById("combat-controls")
+    .style.display = show ? "block" : "none";
 }
 
+// ===== Update Stats & Inventory =====
 function updatePlayerStats() {
   document.getElementById("hp").textContent = gameState.hp;
   document.getElementById("spirit").textContent = gameState.spirit;
@@ -184,86 +196,129 @@ function updatePlayerStats() {
 }
 
 function updateInventory() {
-  const inventoryList = document.getElementById("inventory-list");
-  inventoryList.innerHTML = "";
-  gameState.inventory.forEach((item) => {
+  const ul = document.getElementById("inventory-list");
+  ul.innerHTML = "";
+
+  for (const item of gameState.inventory) {
+    const filename = item.replace(/ /g, "_").toLowerCase() + ".png";
     const li = document.createElement("li");
-    li.innerHTML = `<img src="assets/icons/${item.replace(/ /g, "_").toLowerCase()}.png" alt="${item}" class="inventory-icon" /> ${item}`;
-    inventoryList.appendChild(li);
-  });
+
+    const img = document.createElement("img");
+    img.src = `assets/icons/${filename}`;
+    img.alt = item;
+    img.className = "inventory-icon";
+    img.onerror = () => img.remove(); // hide broken
+
+    li.appendChild(img);
+    li.append(item);
+    ul.appendChild(li);
+  }
 }
 
+// ===== Reset Game =====
 function resetGame() {
-  gameState.hp = 5;
-  gameState.spirit = 3;
-  gameState.inventory = [];
-  gameState.playerClass = "";
-  gameState.playerName = "";
-  gameState.usedPower = false;
-  gameState.currentEnemyIndex = 0;
-  gameState.currentEnemyHP = 0;
+  Object.assign(gameState, {
+    playerName: "",
+    playerClass: "",
+    hp: 5,
+    spirit: 3,
+    inventory: [],
+    currentScene: "intro",
+    usedPower: false,
+    currentEnemyIndex: 0,
+    currentEnemyHP: 0
+  });
   updateInventory();
   updatePlayerStats();
 }
 
-// Combat logic
+// ===== Combat Handlers =====
 function handleAttack() {
-  const enemy = enemyList[gameState.currentEnemyIndex];
+  const e = enemyList[gameState.currentEnemyIndex];
   gameState.currentEnemyHP -= 1;
   if (gameState.currentEnemyHP <= 0) {
     gameState.currentEnemyIndex++;
-    if (gameState.currentEnemyIndex >= enemyList.length) {
-      renderScene("finalVictory");
-    } else {
-      renderScene(enemy.nextScene);
-    }
-  } else {
-    gameState.hp -= enemy.damage;
-    if (gameState.hp <= 0) {
-      renderScene("death");
-    } else {
-      renderScene("combat");
-    }
+    return renderScene(
+      gameState.currentEnemyIndex >= enemyList.length
+        ? "finalVictory"
+        : e.nextScene
+    );
   }
+  gameState.hp -= e.damage;
+  return gameState.hp <= 0 ? renderScene("death") : renderScene("combat");
 }
 
 function handleSpecial() {
   if (gameState.usedPower || gameState.spirit <= 0) return;
-  const enemy = enemyList[gameState.currentEnemyIndex];
+  const e = enemyList[gameState.currentEnemyIndex];
   gameState.currentEnemyHP -= 2;
-  gameState.spirit -= 1;
+  gameState.spirit--;
   gameState.usedPower = true;
   if (gameState.currentEnemyHP <= 0) {
     gameState.currentEnemyIndex++;
-    if (gameState.currentEnemyIndex >= enemyList.length) {
-      renderScene("finalVictory");
-    } else {
-      renderScene(enemy.nextScene);
-    }
-  } else {
-    gameState.hp -= enemy.damage;
-    if (gameState.hp <= 0) {
-      renderScene("death");
-    } else {
-      renderScene("combat");
-    }
+    return renderScene(
+      gameState.currentEnemyIndex >= enemyList.length
+        ? "finalVictory"
+        : e.nextScene
+    );
   }
+  gameState.hp -= e.damage;
+  return gameState.hp <= 0 ? renderScene("death") : renderScene("combat");
 }
 
 function handleFlee() {
   renderScene("start");
 }
 
-// Add event listeners
+// ===== Save / Load =====
+const SAVE_KEY = "shambhala-save";
+
+function saveGame() {
+  console.log("🔒 saveGame()", gameState);
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
+    console.log("✅ Saved:", localStorage.getItem(SAVE_KEY));
+    alert("Game saved!");
+  } catch (err) {
+    console.error("💥 Save failed", err);
+    alert("Failed to save.");
+  }
+}
+
+function loadGame() {
+  console.log("📂 loadGame()");
+  const data = localStorage.getItem(SAVE_KEY);
+  console.log("⤷ raw data:", data);
+  if (!data) return alert("No save found.");
+  try {
+    Object.assign(gameState, JSON.parse(data));
+    console.log("✅ Loaded:", gameState);
+    updatePlayerStats();
+    updateInventory();
+    renderScene(gameState.currentScene);
+    alert("Game loaded!");
+  } catch (err) {
+    console.error("💥 Load failed", err);
+    alert("Failed to load.");
+  }
+}
+
+// ===== Initialization =====
 window.onload = () => {
   renderScene("intro");
-  document.getElementById("attack-btn").addEventListener("click", handleAttack);
-  document.getElementById("special-btn").addEventListener("click", handleSpecial);
-  document.getElementById("flee-btn").addEventListener("click", handleFlee);
+  document.getElementById("attack-btn")
+    .addEventListener("click", handleAttack);
+  document.getElementById("special-btn")
+    .addEventListener("click", handleSpecial);
+  document.getElementById("flee-btn")
+    .addEventListener("click", handleFlee);
 
-  // Background music
-  const bgMusic = new Audio("assets/audio/ambient-loop.mp3");
-  bgMusic.loop = true;
-  bgMusic.volume = 0.4;
-  bgMusic.play().catch(() => console.warn("Autoplay blocked"));
+  document.getElementById("save-btn")
+    .addEventListener("click", saveGame);
+  document.getElementById("load-btn")
+    .addEventListener("click", loadGame);
+
+  const bg = new Audio("assets/audio/ambient-loop.mp3");
+  bg.loop = true; bg.volume = 0.4;
+  bg.play().catch(() => {});
 };
