@@ -211,3 +211,38 @@ input[type="text"] {
     height: 20px;
   }
 }
+
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap');
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(15, 10, 10, 0.9);
+  border-bottom: 2px solid #a67c52;
+  padding: 15px 30px;
+  font-family: 'EB Garamond', serif;
+  color: #f5e6c9;
+  box-shadow: 0 2px 10px #000;
+}
+
+.nav-title {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #d2b48c;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.nav-links a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #e3d5b3;
+  font-weight: bold;
+  font-size: 1.05em;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #f0e6d2;
+  transform: scale(1.05);
+}

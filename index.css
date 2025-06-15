@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'EB Garamond', serif;
+  background: url('https://www.transparenttextures.com/patterns/dark-wood.png');
+  background-color: #0b0b0b;
+  color: #f5e6c9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  max-width: 700px;
+  padding: 40px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.85);
+  border: 3px solid #a67c52;
+  border-radius: 15px;
+  box-shadow: 0 0 30px #000;
+}
+
+header h1 {
+  font-size: 3em;
+  color: #f5e6c9;
+  text-shadow: 2px 2px 5px #000;
+  margin-bottom: 0;
+}
+
+.subtitle {
+  font-style: italic;
+  font-size: 1.2em;
+  margin-top: 5px;
+  color: #d2b48c;
+}
+
+nav {
+  margin: 30px 0;
+}
+
+.btn {
+  display: inline-block;
+  margin: 10px;
+  padding: 12px 28px;
+  background-color: #3b2f2f;
+  color: #f5e6c9;
+  border: 2px solid #d2b48c;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #5a3f2f;
+  box-shadow: 0 0 10px #d2b48c;
+  transform: scale(1.05);
+}
+
+.intro {
+  font-size: 1.1em;
+  margin: 20px auto;
+  line-height: 1.6;
+  color: #e3d5b3;
+}
+
+footer {
+  margin-top: 40px;
+  font-size: 0.9em;
+  color: #99876a;
+}
