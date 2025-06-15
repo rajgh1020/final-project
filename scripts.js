@@ -207,7 +207,7 @@ function updateInventory() {
     img.src = `assets/icons/${filename}`;
     img.alt = item;
     img.className = "inventory-icon";
-    img.onerror = () => img.remove(); // hide broken
+    img.onerror = () => img.remove();
 
     li.appendChild(img);
     li.append(item);
@@ -304,21 +304,24 @@ function loadGame() {
 }
 
 // ===== Initialization =====
-window.onload = () => {
+document.addEventListener("DOMContentLoaded", () => {
   renderScene("intro");
-  document.getElementById("attack-btn")
-    .addEventListener("click", handleAttack);
-  document.getElementById("special-btn")
-    .addEventListener("click", handleSpecial);
-  document.getElementById("flee-btn")
-    .addEventListener("click", handleFlee);
+  document.getElementById("attack-btn").addEventListener("click", handleAttack);
+  document.getElementById("special-btn").addEventListener("click", handleSpecial);
+  document.getElementById("flee-btn").addEventListener("click", handleFlee);
 
-  document.getElementById("save-btn")
-    .addEventListener("click", saveGame);
-  document.getElementById("load-btn")
-    .addEventListener("click", loadGame);
+  document.getElementById("save-btn").addEventListener("click", saveGame);
+  document.getElementById("load-btn").addEventListener("click", loadGame);
 
-  const bg = new Audio("assets/audio/ambient-loop.mp3");
-  bg.loop = true; bg.volume = 0.4;
-  bg.play().catch(() => {});
-};
+  const bgAudio = document.getElementById("bg-audio");
+  bgAudio.volume = 0.3;
+  bgAudio.play().catch(() => {
+    console.warn("Autoplay blocked; user gesture required");
+  });
+
+  const muteBtn = document.getElementById("mute-btn");
+  muteBtn.addEventListener("click", () => {
+    bgAudio.muted = !bgAudio.muted;
+    muteBtn.textContent = bgAudio.muted ? "🔈 Unmute" : "🔊 Mute";
+  });
+});

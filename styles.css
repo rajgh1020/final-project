@@ -246,3 +246,6 @@ input[type="text"] {
   color: #f0e6d2;
   transform: scale(1.05);
 }
+#bg-audio {
+  display: none;
+}
