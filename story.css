@@ -1,0 +1,113 @@
+/* styles.css */
+
+/* ===== Import Fantasy Fonts ===== */
+@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap');
+
+/* ===== Base Reset & Body Styling ===== */
+body {
+  font-family: 'Uncial Antiqua', serif;
+  background: url('https://www.transparenttextures.com/patterns/dark-wood.png');
+  background-color: #0d0d0d;
+  color: #e0d8c3;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* ===== Main Container ===== */
+#game-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px 30px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 4px solid #c19a6b;
+  border-radius: 12px;
+  box-shadow: 0 0 30px #000;
+}
+
+/* ===== Page Title ===== */
+h1 {
+  font-family: 'EB Garamond', serif;
+  font-size: 2.8em;
+  text-align: center;
+  color: #f5e6c9;
+  margin-bottom: 25px;
+  text-shadow: 2px 2px 6px #000;
+}
+
+/* ===== Story Box Styling ===== */
+#story-box {
+  background: rgba(15, 10, 10, 0.75);
+  padding: 20px;
+  border: 2px solid #7a5c3e;
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px #000;
+}
+
+/* paragraphs & lists inside story */
+#story-box p,
+#story-box ul {
+  margin: 1em 0;
+}
+#story-box ul {
+  padding-left: 1.2em;
+  list-style: disc inside;
+}
+
+/* section headings */
+#story-box h2 {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.6em;
+  margin: 1.5em 0 0.5em;
+  border-left: 4px solid #c19a6b;
+  padding-left: 0.5em;
+}
+
+/* horizontal rules */
+#story-box hr {
+  border: none;
+  border-top: 2px solid #7a5c3e;
+  margin: 2em 0;
+}
+
+/* ===== Glow Text ===== */
+.glow-text {
+  color: #f0e6d2;
+  text-shadow: 0 0 8px #f0e6d2, 0 0 12px #c19a6b;
+  display: block;
+  margin-top: 1em;
+}
+
+/* ===== Fade-In Animation ===== */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1.5s ease-in forwards;
+}
+@keyframes fadeIn {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Responsive Adjustments ===== */
+@media screen and (max-width: 768px) {
+  #game-container {
+    margin: 20px 10px;
+    padding: 15px 20px;
+  }
+  h1 {
+    font-size: 2em;
+  }
+  #story-box {
+    font-size: 0.95em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 1.6em;
+  }
+  #story-box {
+    padding: 15px;
+  }
+}
