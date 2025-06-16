@@ -2,23 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Story | Shadows of Shambhala</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story | Shadows of Shambhala</title>
+
+  <!-- Load main styles first, then story-specific overrides -->
+  <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="../css/story.css" />
-  <link rel="stylesheet" href="../css/styles.css">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet" />
 </head>
 <body>
-     <header class="navbar">
-  <div class="nav-title">Shadows of Shambhala</div>
-  <nav class="nav-links">
-    <a href="../index.html">Home</a>
-    <a href="game.html">Start Game</a>
-    <a href="about.html">How to Play</a>
-    <a href="story.html">Story</a>
-    <a href="gallery.html">Gallery</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-</header>
+  <header class="navbar">
+    <div class="nav-title">Shadows of Shambhala</div>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="game.html">Start Game</a>
+      <a href="about.html">How to Play</a>
+      <a href="story.html" class="active">Story</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
   <main id="game-container">
     <h1>📜 The Story of Shadows of Shambhala</h1>
 
@@ -66,5 +73,6 @@
       <p class="glow-text"><em>“Not all who wander in Shambhala return. But all who enter are changed.”</em></p>
     </section>
   </main>
+
 </body>
 </html>
