@@ -1,0 +1,65 @@
+/* contact.css */
+
+/* reuse your game-container spacing */
+#game-container {
+  padding-bottom: 40px;
+}
+
+/* Intro paragraph */
+#game-container > p {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+/* Contact form layout */
+#contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Labels */
+#contact-form label {
+  font-family: 'EB Garamond', serif;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Inputs & textarea */
+#contact-form input,
+#contact-form textarea {
+  background: rgba(30, 20, 20, 0.7);
+  border: 2px solid #7a5c3e;
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: #e0d8c3;
+  font-family: 'Uncial Antiqua', serif;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+/* Ensure textarea is a decent height */
+#contact-form textarea {
+  min-height: 140px;
+}
+
+/* Align submit button to the left */
+#contact-form button {
+  width: fit-content;
+  margin-top: 0.5rem;
+}
+
+/* Mobile tweaks */
+@media screen and (max-width: 480px) {
+  #contact-form input,
+  #contact-form textarea {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+  #contact-form button {
+    font-size: 0.9rem;
+    padding: 8px 14px;
+  }
+}
